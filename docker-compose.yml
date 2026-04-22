@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: event-management-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://mongo:27017/event-management
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    restart: always
+
+  mongo:
+    image: mongo:6
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  redis:
+    image: redis:7
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+volumes:
+  mongo-data:
+  redis-data:
