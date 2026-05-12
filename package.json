@@ -6,20 +6,25 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon --legacy-watch --exec ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^8.23.0",
-    "nodemon": "^3.1.14"
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.23.0"
   }
 }
