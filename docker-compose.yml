@@ -10,10 +10,13 @@ services:
       - mongo
       - redis
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       MONGO_URI: mongodb://mongo:27017/event-management
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    volumes:
+      - .:/app
+    command: npm run dev
     restart: always
 
   mongo:
