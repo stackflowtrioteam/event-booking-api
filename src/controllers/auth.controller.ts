@@ -24,7 +24,7 @@ const authController = {
             password: hashedPassword,
             userType,
             phoneNumber,
-            ...userType === 'vendor' ? { eventCategory, city , state, businessName } : {},
+            ...userType === 'vendor' ? { eventCategory, city, state, businessName, kycStatus: 'pending' } : {},
         }
         const user = await User.create(data);
     

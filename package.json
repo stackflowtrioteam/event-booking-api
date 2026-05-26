@@ -12,7 +12,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/hapi__joi": "^17.1.15",
     "@types/jsonwebtoken": "^9.0.10",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
@@ -20,11 +23,15 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@types/multer": "^2.1.0",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^8.23.0"
+    "mongoose": "^8.23.0",
+    "multer": "^2.1.1"
   }
 }
