@@ -72,7 +72,15 @@ const webVendorController = {
             if (city !== undefined) rootUpdate.city = city;
 
             // Build portfolio subdoc update
-            const existingPortfolio = (vendor.portfolio as any) || {};
+            // Use .toObject() to get a plain JS object — spreading a Mongoose subdocument
+            // directly copies internal Mongoose metadata ($__, $isNew, etc.) which causes
+            // MongoDB to silently ignore the portfolio field update.
+            const existingPortfolio = vendor.portfolio
+                ? (vendor.portfolio as any).toObject
+                    ? (vendor.portfolio as any).toObject()
+                    : { ...(vendor.portfolio as any) }
+                : {};
+
             const portfolioUpdate: any = { ...existingPortfolio };
             if (description !== undefined) portfolioUpdate.description = description;
             if (startingPrice !== undefined) portfolioUpdate.startingPrice = Number(startingPrice);
@@ -92,10 +100,19 @@ const webVendorController = {
                 );
             }
 
+            // Use explicit dot-notation keys for each portfolio sub-field to guarantee
+            // MongoDB applies all changes, including portfolioImages, even if the
+            // top-level portfolio subdoc was previously undefined.
+            const dbSet: any = { ...rootUpdate };
+            if (portfolioUpdate.description !== undefined) dbSet['portfolio.description'] = portfolioUpdate.description;
+            if (portfolioUpdate.startingPrice !== undefined) dbSet['portfolio.startingPrice'] = portfolioUpdate.startingPrice;
+            if (portfolioUpdate.servicesOffered !== undefined) dbSet['portfolio.servicesOffered'] = portfolioUpdate.servicesOffered;
+            if (portfolioUpdate.portfolioImages !== undefined) dbSet['portfolio.portfolioImages'] = portfolioUpdate.portfolioImages;
+
             const updatedVendor = await User.findByIdAndUpdate(
                 vendorId,
-                { $set: { ...rootUpdate, portfolio: portfolioUpdate } },
-                { new: true }
+                { $set: dbSet },
+                { new: true, upsert: false }
             ).select('-password');
 
             return res.json({
